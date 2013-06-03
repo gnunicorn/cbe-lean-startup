@@ -298,7 +298,6 @@ incremental_display: true,
   },
 
   toggle_notes: function() {
-    alert(w3c_slidy.has_class(w3c_slidy.notes[0], "hidden"));
     var actor = w3c_slidy.has_class(w3c_slidy.notes[0], "hidden") ? w3c_slidy.remove_class : w3c_slidy.add_class
     for (var i = 0; i < w3c_slidy.notes.length; ++i) {
       actor.call(w3c_slidy, w3c_slidy.notes[i], "hidden");
