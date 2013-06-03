@@ -112,10 +112,6 @@ div.background {
   display: none;
 }
 
-div.handout {
-  margin-left: 20px;
-  margin-right: 20px;
-}
 
 div.slide.titlepage {
   text-align: center;
@@ -386,11 +382,6 @@ div.initial_prompt { display: none; visibility: hidden }
      visibility: visible;
      position: inherit;
   }
-  div.handout {
-     border-top-style: solid;
-     border-top-width: thin;
-     border-top-color: black;
-  }
 
 @media screen {
   .hidden { display: none; visibility: visible }
@@ -404,7 +395,6 @@ div.initial_prompt { display: none; visibility: hidden }
   body.single_slide .invisible { visibility: hidden }
   body.single_slide .hidden { display: none; visibility: hidden }
   body.single_slide div.slide { position: absolute }
-  body.single_slide div.handout { display: none; visibility: hidden }
 }
 
 @media print {
@@ -419,6 +409,14 @@ div.initial_prompt { display: none; visibility: hidden }
   div.slide { page-break-before: always }
   /* :first-child isn't reliable for print media */
   div.slide.first-slide { page-break-before: avoid }
+
+  div.handout {
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: black;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
 
 

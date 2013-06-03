@@ -69,6 +69,7 @@ var w3c_slidy = {
      "K   \t: toggleMouseClick\n" +
      "I   \t: toggleIncremental\n" +
      "L   \t: toggleColorSet\n" +
+     "N   \t: toggle Notes visibility\n" +
      "T, C\t: tableOfContents\n" +
      "B   \t: biggerFontSize\n" +
      "S   \t: smallerFontSize\n" +
@@ -294,6 +295,14 @@ incremental_display: true,
 
     if (focus && !w3c_slidy.opera)
       w3c_slidy.help_anchor.focus();
+  },
+
+  toggle_notes: function() {
+    alert(w3c_slidy.has_class(w3c_slidy.notes[0], "hidden"));
+    var actor = w3c_slidy.has_class(w3c_slidy.notes[0], "hidden") ? w3c_slidy.remove_class : w3c_slidy.add_class
+    for (var i = 0; i < w3c_slidy.notes.length; ++i) {
+      actor.call(w3c_slidy, w3c_slidy.notes[i], "hidden");
+    }
   },
 
   toggle_table_of_contents: function () {
@@ -1657,6 +1666,7 @@ if (!w3c_slidy.incremental_display) {incremental = false;}
     window.focus();
   },
 
+
   // used to ensure IE refreshes toolbar in correct position
   refresh_toolbar: function (interval) {
     if (!w3c_slidy.ns_pos && !w3c_slidy.ie7)
@@ -2027,6 +2037,11 @@ if (!w3c_slidy.incremental_display) {incremental = false;}
     else if (key == 70)  // F for toggle toolbar
     {
       w3c_slidy.toggle_toolbar();
+      return w3c_slidy.cancel(event);
+    }
+    else if (key == 78)  // n for toggle notes
+    {
+      w3c_slidy.toggle_notes();
       return w3c_slidy.cancel(event);
     }
     else if (key == 65)  // A for toggle view single/all slides
