@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<title>Lean Life Canvas</title>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="copyright" content="Copyright &#169; Benjamin Kampmann" />
-<meta name="generator" content="AsciiDoc 8.6.8" />
+<meta name="generator" content="AsciiDoc 8.6.8 / slidy2 backend 1.0.3" />
+<title>Lean Life Canvas</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -532,6 +532,8 @@ body.manpage div.sectionbody {
 @media print {
   body.manpage div#toc { display: none; }
 }
+</style>
+<style type="text/css">
 /* slidy.css
 
    Copyright (c) 2005-2010 W3C (MIT, ERCIM, Keio), All Rights Reserved.
@@ -585,7 +587,6 @@ div.initial_prompt {
   width: 90%;
   background-color: rgb(200,200,200);
   opacity: 0.35;
-  background-color: rgb(200,200,200, 0.35);
   cursor: pointer;
 }
 
@@ -647,10 +648,6 @@ div.background {
   display: none;
 }
 
-div.handout {
-  margin-left: 20px;
-  margin-right: 20px;
-}
 
 div.slide.titlepage {
   text-align: center;
@@ -921,11 +918,6 @@ div.initial_prompt { display: none; visibility: hidden }
      visibility: visible;
      position: inherit;
   }
-  div.handout {
-     border-top-style: solid;
-     border-top-width: thin;
-     border-top-color: black;
-  }
 
 @media screen {
   .hidden { display: none; visibility: visible }
@@ -939,7 +931,6 @@ div.initial_prompt { display: none; visibility: hidden }
   body.single_slide .invisible { visibility: hidden }
   body.single_slide .hidden { display: none; visibility: hidden }
   body.single_slide div.slide { position: absolute }
-  body.single_slide div.handout { display: none; visibility: hidden }
 }
 
 @media print {
@@ -954,6 +945,14 @@ div.initial_prompt { display: none; visibility: hidden }
   div.slide { page-break-before: always }
   /* :first-child isn't reliable for print media */
   div.slide.first-slide { page-break-before: avoid }
+
+  div.handout {
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: black;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
 
 
@@ -978,7 +977,25 @@ li {
   margin-bottom: 0.5em;
 }
 
-
+/* jmi hack */
+@media screen {
+  body.single_slide .invisible { opacity: 0.15; visibility: visible; }
+  /*img.invisible { opacity: 0.1; visibility: visible; } */
+  img.invisible { visibility: hidden !important }
+}
+a {text-decoration: underline;}
+</style>
+<style type="text/css" title="slidy_color_set_none">
+</style>
+<style type="text/css" title="slidy_color_set_yellow">
+</style>
+<style type="text/css" title="slidy_color_set_green">
+</style>
+<style type="text/css" title="slidy_color_set_blue">
+</style>
+<style type="text/css" title="slidy_color_set_black">
+</style>
+<style type="text/css">
 body {
 	font-family: Georgia,"Times New Roman",Times,serif;
 	color: #777777;
@@ -988,6 +1005,8 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: "News Cycle","Arial Narrow Bold",sans-serif;
 	font-weight: bold;
 	color: #777777;
+	border: none;
+	text-align: center;
 }
 .headshot img {
 	margin: 3px 15px;
@@ -998,10 +1017,53 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: right;
 }
 
+
+.slide.hasBG > div{
+	border: solid #666 1px;
+	border-left: none;
+	border-right: none;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0,0,0,0.5);
+	color: white;
+}
+
+.slide.hasBG .sectionbody > * {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.slide.hasBG h1,
+.slide.hasBG h2,
+.slide.hasBG h3,
+.slide.hasBG h4,
+.slide.hasBG p {
+	color: white;
+}
+
+
 #header h1 {
 	margin: 20%;
 	padding: 0;
 	text-align: center
+}
+
+.handout {
+	border: none;
+	margin: 0;
+}
+
+.slide {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-box-pack: center;
+
+	display: -moz-box;
+	-moz-box-orient: vertical;
+	-moz-box-pack: center;
+
+	display: box;
+	box-orient: vertical;
+	box-pack: center;
 }
 
 .centered {
@@ -1058,6 +1120,11 @@ ul > li > *, ol > li > * {
 
    http://www.w3.org/Consortium/Legal/copyright-documents
    http://www.w3.org/Consortium/Legal/copyright-software
+
+   Defines single name "w3c_slidy" in global namespace
+   Adds event handlers without trampling on any others
+
+   JMI: Dynamic features added
 */
 
 // the slidy object implementation
@@ -1102,6 +1169,25 @@ var w3c_slidy = {
   help_page: "http://www.w3.org/Talks/Tools/Slidy2/help/help.html",
   help_text: "Navigate with mouse click, space bar, Cursor Left/Right, " +
              "or Pg Up and Pg Dn. Use S and B to change font size.",
+// jmi
+  help_keymap:
+    "PGDN\t: nextSlide\n" +
+     "PGUP\t: previousSlide\n" +
+     "HOME\t: firstSlide\n" +
+     "END  \t: lastSlide\n" +
+     "SPACE\t: nextContent\n" +
+     "->  \t: nextContent\n" +
+     "<-  \t: previousContent\n" +
+     "A   \t: toggleAllSlides\n" +
+     "F   \t: toggleFooter\n" +
+     "K   \t: toggleMouseClick\n" +
+     "I   \t: toggleIncremental\n" +
+     "L   \t: toggleColorSet\n" +
+     "N   \t: toggle Notes visibility\n" +
+     "T, C\t: tableOfContents\n" +
+     "B   \t: biggerFontSize\n" +
+     "S   \t: smallerFontSize\n" +
+     "M   \t: key mapping\n",
 
   size_index: 0,
   size_adjustment: 0,
@@ -1117,6 +1203,9 @@ var w3c_slidy = {
   // object elements. The work around is to save width/height attributes
   // and then to recompute absolute width/height dimensions on resizing
    objects: [],
+
+//jmi
+incremental_display: true,
 
   // attach initialiation event handlers
   set_up: function () {
@@ -1144,7 +1233,7 @@ var w3c_slidy = {
   init: function () {
     //alert("slidy starting test 10");
     document.body.style.visibility = "visible";
-    w3c_slidy_i18n.init();
+    this.init_localization();
     this.add_toolbar();
     this.wrap_implicit_slides();
     this.collect_slides();
@@ -1159,6 +1248,9 @@ var w3c_slidy = {
     this.hide_image_toolbar();  // suppress IE image toolbar popup
     this.init_outliner();  // activate fold/unfold support
     this.title = document.title;
+    // jmi
+    this.color_sets = new Array();
+    this.init_color_sets();
 
     // work around for opera bug
     this.is_xhtml = (document.body.tagName == "BODY" ? false : true);
@@ -1202,8 +1294,9 @@ var w3c_slidy = {
     this.add_listener(window, "scroll", this.scrolled);
     this.add_listener(window, "unload", this.unloaded);
 
-    if (!document.body.onclick)
-      document.body.onclick = function () { };
+    // this seems to be a debugging hack
+    //if (!document.body.onclick)
+    //  document.body.onclick = function () { };
 
     this.single_slide_view();
 
@@ -1229,7 +1322,7 @@ var w3c_slidy = {
 
     var heading = this.create_element("div");
     this.add_class(heading, "toc-heading");
-    heading.innerHTML = "Table of Contents".localize();
+    heading.innerHTML = this.localize("Table of Contents");
 
     toc.appendChild(heading);
     var previous = null;
@@ -1250,7 +1343,7 @@ var w3c_slidy = {
       var name = document.createTextNode(this.slide_name(i));
       a.appendChild(name);
       a.onclick = w3c_slidy.toc_click;
-      a.onkeydown = w3c_slidy.toc_keydown;
+      a.onkeydown = w3c_slidy.toc_key_down;
       a.previous = previous;
 
       if (previous)
@@ -1281,7 +1374,7 @@ var w3c_slidy = {
       e||(e=window.event);
 
       if (w3c_slidy.selected_text_len <= 0)
-         w3c_slidy.hide_table_of_contents();
+         w3c_slidy.hide_table_of_contents(true);
 
       w3c_slidy.stop_propagation(e);
 
@@ -1311,16 +1404,23 @@ var w3c_slidy = {
       setTimeout(w3c_slidy.ie_hack, 100);
   },
 
-  hide_table_of_contents: function () {
+  hide_table_of_contents: function (focus) {
     w3c_slidy.add_class(w3c_slidy.toc, "hidden");
 
-    if (!w3c_slidy.opera)
+    if (focus && !w3c_slidy.opera)
       w3c_slidy.help_anchor.focus();
+  },
+
+  toggle_notes: function() {
+    var actor = w3c_slidy.has_class(w3c_slidy.notes[0], "hidden") ? w3c_slidy.remove_class : w3c_slidy.add_class
+    for (var i = 0; i < w3c_slidy.notes.length; ++i) {
+      actor.call(w3c_slidy, w3c_slidy.notes[i], "hidden");
+    }
   },
 
   toggle_table_of_contents: function () {
     if (w3c_slidy.is_shown_toc())
-      w3c_slidy.hide_table_of_contents();
+      w3c_slidy.hide_table_of_contents(true);
     else
       w3c_slidy.show_table_of_contents();
   },
@@ -1361,14 +1461,14 @@ var w3c_slidy = {
       }
     }
 
-    w3c_slidy.hide_table_of_contents(e);
+    w3c_slidy.hide_table_of_contents(true);
     if (w3c_slidy.ie7) w3c_slidy.ie_hack();
     w3c_slidy.stop_propagation(e);
     return w3c_slidy.cancel(e);
   },
 
   // called onkeydown for toc entry
-  toc_keydown: function (event) {
+  toc_key_down: function (event) {
     var key;
 
     if (!event)
@@ -1421,7 +1521,7 @@ var w3c_slidy = {
         }
       }
 
-      w3c_slidy.hide_table_of_contents();
+      w3c_slidy.hide_table_of_contents(true);
 
       if (self.ie7)
        w3c_slidy.ie_hack();
@@ -1800,7 +1900,7 @@ var w3c_slidy = {
       p1.innerHTML = "Tap footer to move to next slide";
     else
       p1.innerHTML = "Space or Right Arrow to move to next " +
-                     "slide, click help below for more details";
+                     "slide, M to see keys mapping, click help below for more details";
 
     this.add_listener(prompt, "click", function (e) {
       document.body.removeChild(prompt);
@@ -1833,7 +1933,7 @@ var w3c_slidy = {
        right.setAttribute("style", "float: right; text-align: right");
 
        counter = this.create_element("span")
-       counter.innerHTML = "slide".localize() + " n/m";
+       counter.innerHTML = this.localize("slide") + " n/m";
        right.appendChild(counter);
        this.toolbar.appendChild(right);
 
@@ -1847,8 +1947,8 @@ var w3c_slidy = {
 
        var help = this.create_element("a");
        help.setAttribute("href", this.help_page);
-       help.setAttribute("title", this.help_text.localize());
-       help.innerHTML = "help?".localize();
+       help.setAttribute("title", this.localize(this.help_text));
+       help.innerHTML = this.localize("help?");
        left.appendChild(help);
        this.help_anchor = help;  // save for focus hack
 
@@ -1857,8 +1957,8 @@ var w3c_slidy = {
 
        var contents = this.create_element("a");
        contents.setAttribute("href", "javascript:w3c_slidy.toggle_table_of_contents()");
-       contents.setAttribute("title", "table of contents".localize());
-       contents.innerHTML = "contents?".localize();
+       contents.setAttribute("title", this.localize("table of contents"));
+       contents.innerHTML = this.localize("contents?");
        left.appendChild(contents);
 
        var gap2 = document.createTextNode(" ");
@@ -1906,8 +2006,8 @@ var w3c_slidy = {
 
        var help = this.create_element("a");
        help.setAttribute("href", this.help_page);
-       help.setAttribute("title", this.help_text.localize());
-       help.innerHTML = "help?".localize();
+       help.setAttribute("title", this.localize(this.help_text));
+       help.innerHTML = this.localize("help?");
        this.toolbar.appendChild(help);
        this.help_anchor = help;  // save for focus hack
 
@@ -1916,8 +2016,8 @@ var w3c_slidy = {
 
        var contents = this.create_element("a");
        contents.setAttribute("href", "javascript:toggleTableOfContents()");
-       contents.setAttribute("title", "table of contents".localize());
-       contents.innerHTML = "contents?".localize();
+       contents.setAttribute("title", this.localize("table of contents".localize));
+       contents.innerHTML = this.localize("contents?");
        this.toolbar.appendChild(contents);
 
        var gap2 = document.createTextNode(" ");
@@ -1945,7 +2045,7 @@ var w3c_slidy = {
        counter.style.color = "red";
        counter.style.background = "rgb(240,240,240)";
 
-       counter.innerHTML = "slide".localize() + " n/m";
+       counter.innerHTML = this.localize("slide") + " n/m";
        this.toolbar.appendChild(counter);
      }
 
@@ -2118,8 +2218,11 @@ var w3c_slidy = {
           self.set_location();
         }
       }
-      else if (this.target == null)
-        location.href = this.href;
+      else
+        w3c_slidy.stop_propagation(event);
+
+//      else if (this.target == null)
+//        location.href = this.href;
 
       this.blur();
       self.disable_slide_click = true;
@@ -2140,7 +2243,7 @@ var w3c_slidy = {
   // either directly or indirectly for use of w3c_slidy vs this
   show_slide_number: function () {
     var timer = w3c_slidy.get_timer();
-    w3c_slidy.slide_number_element.innerHTML = timer + "slide".localize() + " " +
+    w3c_slidy.slide_number_element.innerHTML = timer + w3c_slidy.localize("slide") + " " +
            (w3c_slidy.slide_number + 1) + "/" + w3c_slidy.slides.length;
   },
 
@@ -2238,13 +2341,7 @@ var w3c_slidy = {
       window.location.hash = hash;
 
     var doc = document.getElementById("historyFrame").contentWindow.document;
-    doc.open("javascript:'<html></html>'");
-    // PWL modified this string literal to break the close script tag
-    // which otherwise gets parsed when incorporated
-    doc.write("<html><head><script type=\"text/javascript\">window.parent.w3c_slidy.on_frame_loaded('"+
-      (hash) + "');</" + "script></head><body>hello mum</body></html>");
-    doc.close();
-    },
+  },
 
   // find current slide based upon location
   // first find target anchor and then look
@@ -2340,6 +2437,9 @@ var w3c_slidy = {
     {
       var slide;
 
+//jmi
+if (!w3c_slidy.incremental_display) {incremental = false;}
+
       if ((incremental || w3c_slidy.slide_number == 0) && w3c_slidy.last_shown != null)
       {
         w3c_slidy.last_shown = w3c_slidy.hide_previous_item(w3c_slidy.last_shown);
@@ -2369,6 +2469,8 @@ var w3c_slidy = {
     if (!w3c_slidy.view_all)
     {
       var slide, last = w3c_slidy.last_shown;
+//jmi
+if (!w3c_slidy.incremental_display) {incremental = false;}
 
       if (incremental || w3c_slidy.slide_number == w3c_slidy.slides.length - 1)
          w3c_slidy.last_shown = w3c_slidy.reveal_next_item(w3c_slidy.last_shown);
@@ -2677,6 +2779,7 @@ var w3c_slidy = {
     window.focus();
   },
 
+
   // used to ensure IE refreshes toolbar in correct position
   refresh_toolbar: function (interval) {
     if (!w3c_slidy.ns_pos && !w3c_slidy.ie7)
@@ -2909,7 +3012,7 @@ var w3c_slidy = {
 
   //  See e.g. http://www.quirksmode.org/js/events/keys.html for keycodes
   key_down: function (event) {
-    var key;
+    var key, target, tag;
 
     w3c_slidy.key_wanted = true;
 
@@ -2918,9 +3021,15 @@ var w3c_slidy = {
 
     // kludge around NS/IE differences
     if (window.event)
+    {
       key = window.event.keyCode;
+      target = window.event.srcElement;
+    }
     else if (event.which)
+    {
       key = event.which;
+      target = event.target;
+    }
     else
       return true; // Yikes! unknown browser
 
@@ -2928,6 +3037,12 @@ var w3c_slidy = {
     // as for alt on Opera and Konqueror
     if (!key)
        return true;
+
+    // avoid interfering with keystroke
+    // behavior for non-slidy chrome elements
+    if (!w3c_slidy.slidy_chrome(target) &&
+        w3c_slidy.special_element(target))
+      return true;
 
     // check for concurrent control/command/alt key
     // but are these only present on mouse events?
@@ -2938,7 +3053,7 @@ var w3c_slidy = {
     // dismiss table of contents if visible
     if (w3c_slidy.is_shown_toc() && key != 9 && key != 16 && key != 38 && key != 40)
     {
-      w3c_slidy.hide_table_of_contents();
+      w3c_slidy.hide_table_of_contents(true);
 
       if (key == 27 || key == 84 || key == 67)
         return w3c_slidy.cancel(event);
@@ -3037,6 +3152,11 @@ var w3c_slidy = {
       w3c_slidy.toggle_toolbar();
       return w3c_slidy.cancel(event);
     }
+    else if (key == 78)  // n for toggle notes
+    {
+      w3c_slidy.toggle_notes();
+      return w3c_slidy.cancel(event);
+    }
     else if (key == 65)  // A for toggle view single/all slides
     {
       w3c_slidy.toggle_view();
@@ -3048,7 +3168,7 @@ var w3c_slidy = {
       var alert_msg = (w3c_slidy.mouse_click_enabled ?
                 "enabled" : "disabled") +  " mouse click advance";
 
-      alert(alert_msg.localize());
+      alert(w3c_slidy.localize(alert_msg));
       return w3c_slidy.cancel(event);
     }
     else if (key == 84 || key == 67)  // T or C for table of contents
@@ -3063,8 +3183,31 @@ var w3c_slidy = {
       window.location = w3c_slidy.help_page;
       return w3c_slidy.cancel(event);
     }
-    //else alert("key code is "+ key);
-
+//jmi
+    else if (key == 73) // I to toggle incremental display
+    {
+      var slide = w3c_slidy.slides[w3c_slidy.slide_number];
+      w3c_slidy.hide_slide(slide);
+      if (w3c_slidy.incremental_display) { w3c_slidy.set_visibility_all_incremental("visible"); }
+      w3c_slidy.incremental_display = !w3c_slidy.incremental_display ;
+      w3c_slidy.last_shown = null ;
+      w3c_slidy.set_visibility_all_incremental("hidden");
+      //this.set_eos_status(true);
+      w3c_slidy.show_slide(slide);
+      return w3c_slidy.cancel(event);
+    }
+    else if (key == 76) // L to toggle color-set
+    {
+      w3c_slidy.toggle_color_set();
+      return w3c_slidy.cancel(event);
+    }
+    else if (key == 77) // display help_keymap
+    {
+      alert(w3c_slidy.help_keymap);
+      return w3c_slidy.cancel(event);
+    }
+//jmi end
+     //else alert("key code is "+ key);
     return true;
   },
 
@@ -3267,6 +3410,9 @@ var w3c_slidy = {
   // a parent element with attribute class="incremental"
   set_visibility_all_incremental: function (value) {
     var node = this.next_incremental_item(null);
+
+//jmi
+if (!w3c_slidy.incremental_display) {value = "visible";}
 
     if (value == "hidden")
     {
@@ -3486,14 +3632,9 @@ var w3c_slidy = {
       // all browsers agree on 2 for right button
       rightclick = (e.button == 2);
     }
-    else leftclick = true;
-/*
-    alert("you clicked over a " + target.nodeName + " element\n" +
-    "w3c_slidy.mouse_click_enabled = " + w3c_slidy.mouse_click_enabled + "\n" +
-    "leftclick = " + leftclick + "\n" +
-    "selected text length = " + w3c_slidy.selected_text_len);
-    //alert("selected text length = " + w3c_slidy.selected_text_len);
-*/
+    else
+      leftclick = true;
+
     if (w3c_slidy.selected_text_len > 0)
     {
       w3c_slidy.stop_propagation(e);
@@ -3503,21 +3644,14 @@ var w3c_slidy = {
     }
 
     // dismiss table of contents
-    w3c_slidy.hide_table_of_contents();
+    w3c_slidy.hide_table_of_contents(false);
 
     // check if target is something that probably want's clicks
     // e.g. a, embed, object, input, textarea, select, option
     var tag = target.nodeName.toLowerCase();
 
     if (w3c_slidy.mouse_click_enabled && leftclick &&
-        tag != "a" &&
-        tag != "embed" &&
-        tag != "object" &&
-        tag != "video" &&
-        tag != "input" &&
-        tag != "textarea" &&
-        tag != "select" &&
-        tag != "option" &&
+        !w3c_slidy.special_element(target) &&
         !target.onclick)
     {
       w3c_slidy.next_slide(true);
@@ -3526,6 +3660,38 @@ var w3c_slidy = {
       e.returnValue = false;
       return false;
     }
+
+    return true;
+  },
+
+  special_element: function (e) {
+    var tag = e.nodeName.toLowerCase();
+
+    return e.onkeydown ||
+      e.onclick ||
+      tag == "a" ||
+      tag == "embed" ||
+      tag == "object" ||
+      tag == "video" ||
+      tag == "audio" ||
+      tag == "input" ||
+      tag == "textarea" ||
+      tag == "select" ||
+      tag == "option";
+  },
+
+  slidy_chrome: function (el) {
+    while (el)
+    {
+      if (el == w3c_slidy.toc ||
+          el == w3c_slidy.toolbar ||
+          w3c_slidy.has_class(el, "outline"))
+        return true;
+
+      el = el.parentNode;
+    }
+
+    return false;
   },
 
   get_key: function (e)
@@ -3599,13 +3765,43 @@ var w3c_slidy = {
 
     w3c_slidy.key_wanted = false;
     return false;
-  }
-};
+  },
+// jmi
+  init_color_sets: function(){
+   if (this.color_sets.length == 0){
+     // initialize color_sets array
+     var tmp = document.styleSheets;
+     var j = 0;
+     for (var i=0;i<tmp.length;i++) {
+       var css_name = null ;
+       if (tmp[i].title) {
+	css_name = tmp[i].title ;
+       }
+       if ((tmp[i].href) && (tmp[i].href.indexOf('.css') != -1)) {
+	css_name = tmp[i].href.substring(tmp[i].href.lastIndexOf('/')+1,tmp[i].href.indexOf('.css')) ;
+       }
+	if ((css_name) && (css_name.indexOf('color_set') > 0)) {
+         this.color_sets[j] = tmp[i];
+         this.color_sets[j++].disabled = true;
+	}
+     }
+     if (this.color_sets.length > 0){ this.color_sets[0].disabled = false; }
+   }
+  },
+  toggle_color_set: function(){
+   // toggle to the next color_set
+   if (this.color_sets.length > 0){
+    var i = 0;
+    while ((i < this.color_sets.length) && (this.color_sets[i].disabled == true)) { i = i + 1 ; }
+    if (i == this.color_sets.length) { i = i - 1; }
+    this.color_sets[i].disabled = true ;
+    this.color_sets[(i + 1) % (this.color_sets.length)].disabled = false ;
+   }
+  },
 
 // for each language define an associative array
 // and also the help text which is longer
 
-var w3c_slidy_i18n = {
   strings_es: {
     "slide":"pág.",
     "help?":"Ayuda",
@@ -3697,7 +3893,7 @@ var w3c_slidy_i18n = {
   help_fr:
     "Naviguez avec la souris, la barre d'espace, les flèches " +
     "gauche/droite ou les touches Pg Up, Pg Dn. Utilisez " +
-    "les touches S et B pour modifier la taille de la police.",
+    "les touches S et B pour modifier la taille de la police, M pour l'association des touches.",
 
   strings_hu: {
     "slide":"oldal",
@@ -3794,28 +3990,67 @@ var w3c_slidy_i18n = {
     "vänster- och högerpiltangenterna eller tangenterna Pg Up, Pg Dn. " +
     "Använd tangenterna S och B för att ändra textens storlek.",
 
-// each such language array is declared in the localize array
-// which is set on string prototype and used as in "foo".localize();
-  localize: {
-    "es":this.strings_es,
-    "ca":this.strings_ca,
-    "cs":this.strings_cs,
-    "nl":this.strings_nl,
-    "de":this.strings_de,
-    "pl":this.strings_pl,
-    "fr":this.strings_fr,
-    "hu":this.strings_hu,
-    "it":this.strings_it,
-    "el":this.strings_el,
-    "jp":this.strings_ja,
-    "zh":this.strings_zh,
-    "ru":this.strings_ru,
-    "sv":this.strings_sv
+  strings: { },
+
+  localize: function (src) {
+    if (src == "")
+      return src;
+
+     // try full language code, e.g. en-US
+     var s, lookup = w3c_slidy.strings[w3c_slidy.lang];
+
+     if (lookup)
+     {
+       s = lookup[src];
+
+       if (s)
+        return s;
+     }
+
+     // strip country code suffix, e.g.
+     // try en if undefined for en-US
+     var lg = w3c_slidy.lang.split("-");
+
+     if (lg.length > 1)
+     {
+       lookup = w3c_slidy.strings[lg[0]];
+
+       if (lookup)
+       {
+         s = lookup[src];
+
+         if (s)
+          return s;
+       }
+     }
+
+     // otherwise string as is
+     return src;
   },
 
-  init: function () {
-    var i18n = w3c_slidy_i18n;
+  init_localization: function () {
+    var i18n = w3c_slidy;
     var help_text = w3c_slidy.help_text;
+
+    // each such language array is declared in the localize array
+    // this is used as in  w3c_slidy.localize("foo");
+    this.strings = {
+      "es":this.strings_es,
+      "ca":this.strings_ca,
+      "cs":this.strings_cs,
+      "nl":this.strings_nl,
+      "de":this.strings_de,
+      "pl":this.strings_pl,
+      "fr":this.strings_fr,
+      "hu":this.strings_hu,
+      "it":this.strings_it,
+      "el":this.strings_el,
+      "jp":this.strings_ja,
+      "zh":this.strings_zh,
+      "ru":this.strings_ru,
+      "sv":this.strings_sv
+    },
+
     i18n.strings_es[help_text] = i18n.help_es;
     i18n.strings_ca[help_text] = i18n.help_ca;
     i18n.strings_cs[help_text] = i18n.help_cs;
@@ -3838,44 +4073,6 @@ var w3c_slidy_i18n = {
 
     if (!w3c_slidy.lang)
       w3c_slidy.lang = "en";
-
-    // add localize method to all strings
-    // for use as in "contents".localize()
-   String.prototype.localize = function() {
-     if (this == "")
-       return this;
-
-     // try full language code, e.g. en-US
-     var s, lookup = w3c_slidy_i18n.localize[w3c_slidy.lang];
-
-     if (lookup)
-     {
-       s = lookup[this];
-
-       if (s)
-        return s;
-     }
-
-     // strip country code suffix, e.g.
-     // try en if undefined for en-US
-     var lg = w3c_slidy.lang.split("-");
-
-     if (lg.length > 1)
-     {
-       lookup = w3c_slidy_i18n.localize[lg[0]];
-
-       if (lookup)
-       {
-         s = lookup[this];
-
-         if (s)
-          return s;
-       }
-     }
-
-     // otherwise string as is
-     return this;
-   };
   }
 };
 
@@ -3904,137 +4101,399 @@ setTimeout(w3c_slidy.hide_slides, 50);
 <span id="author">Benjamin Kampmann</span><br />
 <span id="revnumber">version Jun 3rd, 2013</span>
 </div>
-<div class="sect1 slide">
-<h1 id="_the_wrong">The wrong</h1>
+<div class="slide">
+<div id="preamble">
+<h1 style="visibility: hidden;">Preamble</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Preamble";slidefootnotes="";/*]]>*/</script>
 <div class="sectionbody">
-<div class="paragraph"><p>We have a wrong idea about the goal of ones life. We believe that you wake up one morning during your collage years, totally hangover but you had this epiphany, what to do with your life. The idea that we got hit by a bigger goal and now, we walk out of the door and pursue it. And if you don&#8217;t got this hit while you were there, well, then you won&#8217;t ever achieve greatness in your life.</p></div>
-<div class="paragraph"><p>But what if we got it wrong?</p></div>
+<div class="paragraph">
+<p>press <em>n</em> to show the reading notes, now.</p>
 </div>
+<div class="paragraph handout">
+<p>Notes are visible now.</p>
 </div>
-<div class="sect1 slide">
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide wrong-way hasBG">
+
+<div class="sect1">
+<h1 id="_we_are_wrong">We are wrong</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="We are wrong";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>We have a wrong idea about the <strong>meaning of ones life</strong>. We believe that you wake up one morning during your college years, totally hangover and you had this <strong>epiphany, what to do with your life</strong>. The idea that we got hit by a bigger meaning and now, we walk out of the door and pursue it. And if you don&#8217;t got this hit while you were there, well, then you won&#8217;t ever achieve greatness in your life.</p>
+</div>
+<div class="paragraph handout">
+<p>But what if we got it wrong?</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide">
+
+<div class="sect1">
 <h1 id="_case_studies">Case studies</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Case studies";slidefootnotes="";/*]]>*/</script>
 <div class="sectionbody">
-<div class="paragraph"><p>Martin Luther King didn&#8217;t get up on a random morning and delivered the "I have a dream"-speech because an angel told him so in his dream.</p></div>
-<div class="paragraph"><p>Mahatma Gandhi didn&#8217;t defeat the British Empire because he figured out he had to do that, when he was 15. He actually studied law in London.</p></div>
-<div class="paragraph"><p>Nelson Mandela didn&#8217;t go to prison because it was all part of a bigger master plan to overthrow the apartheid, he made up when he co-initiated the Youth League.</p></div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide mr-king hasBG">
+
+<div class="sect1">
+<h1 id="_martin_luther_king">Martin Luther King</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Martin Luther King";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>didn&#8217;t get up on a random morning and delivered the "I have a dream"-speech because an angel told him so in his dream.</p>
 </div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide gandhi hasBG">
+
+<div class="sect1">
+<h1 id="_mahatma_gandhi">Mahatma Gandhi</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Mahatma Gandhi";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>didn&#8217;t defeat the British Empire because he figured out he had to do that, when studying law in London.</p>
 </div>
-<div class="sect1 slide">
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide mandela hasBG">
+
+<div class="sect1">
+<h1 id="_nelson_mandela">Nelson Mandela</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Nelson Mandela";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>didn&#8217;t go to prison because it was all part of a bigger master plan to overthrow the apartheid, he made up when he co-initiated the Youth League.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide lennon hasBG">
+
+<div class="sect1">
 <h1 id="_no_master_plan">No master plan</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="No master plan";slidefootnotes="";/*]]>*/</script>
 <div class="sectionbody">
 <div class="quoteblock">
 <div class="content">
-<div class="paragraph"><p>Life is what happens to you while you’re busy making other plans.</p></div>
+<div class="paragraph">
+<p>Life is what happens to you while you’re busy making other plans.</p>
+</div>
 </div>
 <div class="attribution">
 &#8212; John Lennon
 </div></div>
-<div class="paragraph"><p>Because there is no master plan. Life is iterative. And we humans are not able to experience time in a different than the linear way. So life happens to us. We are not in control. Even if we had a master plan, life would always get in the way. There is no way, we can actually execute a master plan fully.</p></div>
+<div class="paragraph handout">
+<p>Because there is no master plan. Life is iterative. And we humans are not able to experience time in a different than the linear way. So life happens to us. We are not in control. Even if we had a master plan, life would always get in the way. There is no way, we can actually execute a master plan fully.</p>
 </div>
-</div>
-<div class="sect1 slide">
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide">
+
+<div class="sect1">
 <h1 id="_waterfall_model">Waterfall model</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Waterfall model";slidefootnotes="";/*]]>*/</script>
 <div class="sectionbody">
-<div class="paragraph"><p>In product development, we call this the "Waterfall"-model: You come up with an initial plan and then you execute it, until you are done. But a good plan requires good preparation, so one often gets lost in unimportant nitty-gritty details. Another common problem is, that life gets in the way and by the time we are down the line executing, things have changed and the intial goal doesn&#8217;t make any sense anymore.</p></div>
-<div class="paragraph"><p>So you either continue headless or you change course. Which means, getting back to the drawing board.</p></div>
-<div class="paragraph"><p>And most of us don&#8217;t even make it out of the planning phase in the first place. While actually implementing it, would be the harder part.</p></div>
+<div class="paragraph handout">
+<p>In product development, we call this the "Waterfall"-model: You come up with an initial plan and then you execute it, until you are done. But a good plan requires good preparation, so one often gets lost in unimportant nitty-gritty details. Another common problem is, that life gets in the way and by the time we are down the line executing, things have changed and the intial goal doesn&#8217;t make any sense anymore.</p>
 </div>
-</div>
-<div class="sect1 slide">
-<h1 id="_vs_the_agile_model">vs. the Agile Model</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>Because that has been proven to be very often the case in software development, Software Developers have created a different model: in <strong>Agile Development</strong> you accept your ignorance and work in iterations. Instead of making up a big master plan, you commit to a more vague idea, vision or mission, you want to accomplish.</p></div>
-<div class="paragraph"><p>But instead of trying to specify everything and come up with a huge master plan, you work on one part of it at a time in small, short iterations. After each iteration, you come back to your vision, might adapt it and define the next most important step. And then you focus on that step. That way you are much more flexible to change and your plan doesn&#8217;t fall apart, just because this one thing in it doesn&#8217;t work.</p></div>
-<div class="paragraph"><p>While you work on it, the mission and your vision because clearer and clearer by the way you are shaping it.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_back_to_the_case_study">Back to the case study</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>If we now look back to the former cases, we realise, they actually worked in an iterative, step-by-step style. They were all from early on dedicated towards their later master plan, but they didn&#8217;t know it yet. With every decision and step they took, they took them with their vision or a greater idea in the back of their head. But they didn&#8217;t know, where they would end up with it.</p></div>
-<div class="paragraph"><p>Or do you believe Martin Luther King planned on being murder. Or Mahatma Gandhi?</p></div>
-<div class="paragraph"><p>Life is what happens, while you make plans. So, don&#8217;t make plans.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_the_big_question">The big question</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>But that doesn&#8217;t mean you are helpless. If life is going to shape big parts of it, isn&#8217;t it set to chance for us to achieve greatness? And if we agree on that fact that having the idea/goal is only the smaller part and implementation is what actually makes the difference, how can one ever achieve anything if we don&#8217;t even know the idea?</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_the_lean_method">the lean method</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>But then what if, instead of trying to find our goal in life and executing towards it, we accept that we can&#8217;t know it just yet and that actually life is going to define a big part of it.</p></div>
-<div class="paragraph"><p>And with that accepted, we look for topics, which define our life. Broader parts, as we can&#8217;t see the master plan yet, and start implementing towards them. And not in a big chunk, but one part at a time. Don&#8217;t try to give up junk food, smoking, drinking and make more sports at the same time. The odds are, you are much more successful if you focus on one at a time.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_topics">Topics</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>Because there are defining topics in anyones life. Things we always did care about and whatever happens came back to. And if the job didn&#8217;t allow us to do that, we did it in our spare time.</p></div>
-<div class="paragraph"><p>Just think back of your childhood. What are your first memories on something you&#8217;ve been passionate about? And then think about the actual, broader thing and the specifics that make this something you care about. It isn&#8217;t shopping for example, but it is hanging out with your peers or the love of beautiful products.</p></div>
-<div class="paragraph"><p>Did you notice I changed the tense here? I made this past thing you were passionate about something you care about. And that is the whole point. These main things, we do care about deeply, they don&#8217;t change that much.</p></div>
-<div class="paragraph"><p>Find the main key topics you care about. If you find more than four, they probably overlap. Find that overlap.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_life_style">Life style</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>The another very important thing is the style of life we want to live by. It is impossible for us to achieve much, if we live in conditions that make it hard for us.</p></div>
-<div class="paragraph"><p>So think about your life and the style you want to live by. Do you want to live in a huge, busy city or do you enjoy the calmness of smaller villages? Do you need regularity and rules? Or do you prefer to go with the wind?  And how do you approach it, when something isn&#8217;t fit for your style? Do you freak out, do you need it to be perfect or are you ok with things not being totally clear?</p></div>
-<div class="paragraph"><p>This is probably also something you can already see in your earlier childhood. And also think about the influence your parents or other children might had on this because it was unacceptable behaviour. You were happy in the mess you called your bedroom? Then this is the way you are most comfortable to be organised.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_trade_offs">Trade Offs</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>But this all comes with costs. The topics and especially the way you are and the life style you choose come with certain trade-offs you need to make. For example, if you want an exciting life and travel the world, a trade-off might be stability and security as a small village and family-life would offer you.</p></div>
-<div class="paragraph"><p>So think hard about those topics and the admired life-style and what you have to trade-off for that. Write it all down, even if you are not yet comfortable with that. But you should at least be aware of them and later on, can decide whether it is worth the trade-off for you or not.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_people">People</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>The other highly important thing in ones life are the people surrounding us. After all the human erectus is a herding animal and we are highly influenced by the people around us. We need other people to support us, we need other people to correct us and to learn from. This can be family or friends, peers or colleagues, volunteer groups or strangers we meet in a bar. But we need them.</p></div>
-<div class="paragraph"><p>Think about the kind of people you have, you need and you want in your life. Not only think about people that share your same topics but more over of people, who can and will support you, no matter what. You will need them in tough times.</p></div>
-<div class="paragraph"><p>But also think of your roles models. Who are them? Why them? Try to find specific role models and admire them for a specific trade. No ones life was always as dreamy and great at one might think. But that specific part, that how you want to be about certain things.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_relationships">Relationships</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>As important as the people in our lifes are the relationships we have. The happiness and richness of our life is very dependant on the people and what relationship we have with them. And though every relationship is different, there are patterns in a human life and seeing and learning about them, helps you understand yourself.</p></div>
-<div class="paragraph"><p>Some people have one very close and many rather far away friends, others are very family-driven. Others only have male or female friends. Think about what kind of relationships around you make you happy.</p></div>
-<div class="paragraph"><p>And then think about how to make sure these relationships continue to work. For some it is really important to be in touch every day, for other you can have no contact in a decade but when you reach out to them, they got your back and it is as if you never stopped high school.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_benefits_and_luxaries">Benefits and Luxaries</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>Aside from all of these things, there are thing in life we enjoy the most. Those can be very personal and might not be understood by others ever. It can be an addiction to that one ice cream flavour that is really hard to get or the leather couch, the view on the sea or driving around in a car.</p></div>
-<div class="paragraph"><p>Those are things that might even be harmful to us and our body, but we enjoy them non-the-less, which is while some argue you should get rid of them. I&#8217;d argue the opposite: keep them. But call them what they are: Luxaries. You don&#8217;t need them and you can probably stay without them for a good while but don&#8217;t cut them out of your life.</p></div>
-<div class="paragraph"><p>Especially in hard moments they can lighten up your day and make you aware that even the worst day has something good. But they are also precious. Consumed to often luxaries become a commodity and lose their effect. Guard them, keep them in your pocket as something to enjoy once in a while out of good or bad reason. But you deserve luxaries, too. And make sure you give yourself a good treat ones in a while.</p></div>
-</div>
-</div>
-<div class="sect1 slide">
-<h1 id="_the_canvas">The canvas</h1>
-<div class="sectionbody">
-<div class="paragraph"><p>And put it all in the canvas:</p></div>
-<div class="imageblock ditaa">
+<div class="imageblock ditaa centered">
 <div class="content">
 <img src="lean-life-canvas__1.png" alt="lean-life-canvas__1.png" />
 </div>
 </div>
+<div class="paragraph handout">
+<p>So you either continue headless or you change course. Which means, getting back to the drawing board.</p>
 </div>
+<div class="paragraph handout">
+<p>And most of us don&#8217;t even make it out of the planning phase in the first place. While actually implementing it, would be the harder part.</p>
 </div>
-<div class="sect1 slide">
-<h1 id="_this_is_your_life">This is your life</h1>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide">
+
+<div class="sect1">
+<h1 id="_vs_the_agile_model">vs. the Agile Model</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="vs. the Agile Model";slidefootnotes="";/*]]>*/</script>
 <div class="sectionbody">
-<div class="paragraph"><p>All this together defines you. This defines who you are, what you do and what you are aiming towards. And if you look at it, you&#8217;ll find quite a few things are not as they are supposed to be yet.</p></div>
-<div class="paragraph"><p>This is where the iteration model comes in: find those things. Mark them and find the one that you want to work on next time. Come up with a good action plan on how to tackle that specific part. And come up with a good metric on figure out, whether you got closer to it. And once you are close enough, come back to the board, re-arange things to reflect this or other changes and look for the next thing to focus on.</p></div>
-<div class="paragraph"><p>You will add and remove things constantly, refine, rephrase and redefine things. And that is ok. The further you get implementing your life, the clearer it will becomes what it is about. So it is totally okay to start out with rather broad topics and get better at it while you go.</p></div>
+<div class="paragraph handout">
+<p>Because that has been proven to be very often the case in software development, Software Developers have created a different model: in <strong>Agile Development</strong> you accept your ignorance and work in iterations. Instead of making up a big master plan, you commit to a more vague idea, vision or mission, you want to accomplish.</p>
+</div>
+<div class="paragraph handout">
+<p>But instead of trying to specify everything and come up with a huge master plan, you work on one part of it at a time in small, short iterations. After each iteration, you come back to your vision, might adapt it and define the next most important step. And then you focus on that step. That way you are much more flexible to change and your plan doesn&#8217;t fall apart, just because this one thing in it doesn&#8217;t work.</p>
+</div>
+<div class="imageblock ditaa centered">
+<div class="content">
+<img src="lean-life-canvas__2.png" alt="lean-life-canvas__2.png" />
 </div>
 </div>
+<div class="paragraph handout">
+<p>While you work on it, the mission and your vision because clearer and clearer by the way you are shaping it.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide end hasBG">
+
+<div class="sect1">
+<h1 id="_back_to_the_case_study">Back to the case study</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Back to the case study";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>If we now look back to the former cases, we realise, they actually worked in an iterative, step-by-step style. They were all from early on dedicated towards their later master plan, but they didn&#8217;t know it yet. With every decision and step they took, they took them with their vision or a greater idea in the back of their head.</p>
+</div>
+<ul class="">
+<li>
+<span>
+They didn&#8217;t know, where they would end up.
+</span>
+</li>
+<li>
+<span>
+Or do you believe Martin Luther King planned on being murder.
+</span>
+</li>
+<li>
+<span>
+Or Mahatma Gandhi?
+</span>
+</li>
+</ul>
+<div class="paragraph">
+<p>Life is what happens, while you make plans. Ergo, <strong>don&#8217;t make plans</strong>.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide mercy hasBG">
+
+<div class="sect1">
+<h1 id="_the_big_question">The big question</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="The big question";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph">
+<p>But that doesn&#8217;t mean you are helpless?</p>
+</div>
+<div class="paragraph handout">
+<p>If life is going to shape big parts of it, isn&#8217;t it set to chance for us to achieve greatness? And if we agree on that fact that knowing the meaning is only the smaller part and implementation is what actually makes the difference, how can one ever achieve anything if we don&#8217;t even know the idea?</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide lean hasBG">
+
+<div class="sect1">
+<h1 id="_the_lean_method">The Lean Method</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="The Lean Method";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>But then what if, instead of trying to find our goal in life and executing towards it, we accept that we can&#8217;t know it just yet and that actually life is going to define a big part of it.</p>
+</div>
+<div class="paragraph handout">
+<p>And with that accepted, we look for topics, which define our life. Broader parts, as we can&#8217;t see the master plan yet, and start implementing towards them. And not in a big chunk, but one part at a time. Don&#8217;t try to give up junk food, smoking, drinking and make more sports at the same time. The odds are, you are much more successful if you focus on one at a time.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide topics hasBG">
+
+<div class="sect1">
+<h1 id="_topics">Topics</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Topics";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>Because there are defining topics in anyones life. Things we always did care about and whatever happens came back to. And if the job didn&#8217;t allow us to do that, we did it in our spare time.</p>
+</div>
+<div class="paragraph handout">
+<p>Just think back of your childhood. What are your first memories on something you&#8217;ve been passionate about? And then think about the actual, broader thing and the specifics that make this something you care about. It isn&#8217;t shopping for example, but it is hanging out with your peers or the love of beautiful products.</p>
+</div>
+<div class="paragraph handout">
+<p>Did you notice I changed the tense here? I made this past thing you were passionate about something you care about. And that is the whole point. These main things, we do care about deeply, they don&#8217;t change that much.</p>
+</div>
+<div class="paragraph handout">
+<p>Find the main key topics you care about. If you find more than four, they probably overlap. Find that overlap.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide style hasBG">
+
+<div class="sect1">
+<h1 id="_life_style">Life style</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Life style";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>The another very important thing is the style of life we want to live by. It is impossible for us to achieve much, if we live in conditions that make it hard for us.</p>
+</div>
+<div class="paragraph handout">
+<p>So think about your life and the style you want to live by. Do you want to live in a huge, busy city or do you enjoy the calmness of smaller villages? Do you need regularity and rules? Or do you prefer to go with the wind?  And how do you approach it, when something isn&#8217;t fit for your style? Do you freak out, do you need it to be perfect or are you ok with things not being totally clear?</p>
+</div>
+<div class="paragraph handout">
+<p>This is probably also something you can already see in your earlier childhood. And also think about the influence your parents or other children might had on this because it was unacceptable behaviour. You were happy in the mess you called your bedroom? Then this is the way you are most comfortable to be organised.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide market hasBG">
+
+<div class="sect1">
+<h1 id="_trade_offs">Trade Offs</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Trade Offs";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>But this all comes with costs. The topics and especially the way you are and the life style you choose come with certain trade-offs you need to make. For example, if you want an exciting life and travel the world, a trade-off might be stability and security as a small village and family-life would offer you.</p>
+</div>
+<div class="paragraph handout">
+<p>So think hard about those topics and the admired life-style and what you have to trade-off for that. Write it all down, even if you are not yet comfortable with that. But you should at least be aware of them and later on, can decide whether it is worth the trade-off for you or not.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide people hasBG">
+
+<div class="sect1">
+<h1 id="_people">People</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="People";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>The other highly important thing in ones life are the people surrounding us. After all the human erectus is a herding animal and we are highly influenced by the people around us. We need other people to support us, we need other people to correct us and to learn from. This can be family or friends, peers or colleagues, volunteer groups or strangers we meet in a bar. But we need them.</p>
+</div>
+<div class="paragraph handout">
+<p>Think about the kind of people you have, you need and you want in your life. Not only think about people that share your same topics but more over of people, who can and will support you, no matter what. You will need them in tough times.</p>
+</div>
+<div class="paragraph handout">
+<p>But also think of your roles models. Who are them? Why them? Try to find specific role models and admire them for a specific trade. No ones life was always as dreamy and great at one might think. But that specific part, that how you want to be about certain things.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide hug hasBG">
+
+<div class="sect1">
+<h1 id="_relationships">Relationships</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Relationships";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>As important as the people in our lifes are the relationships we have. The happiness and richness of our life is very dependant on the people and what relationship we have with them. And though every relationship is different, there are patterns in a human life and seeing and learning about them, helps you understand yourself.</p>
+</div>
+<div class="paragraph handout">
+<p>Some people have one very close and many rather far away friends, others are very family-driven. Others only have male or female friends. Think about what kind of relationships around you make you happy.</p>
+</div>
+<div class="paragraph handout">
+<p>And then think about how to make sure these relationships continue to work. For some it is really important to be in touch every day, for other you can have no contact in a decade but when you reach out to them, they got your back and it is as if you never stopped high school.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide luxury hasBG">
+
+<div class="sect1">
+<h1 id="_benefits_and_luxuries">Benefits and Luxuries</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Benefits and Luxuries";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>Aside from all of these things, there are thing in life we enjoy the most. Those can be very personal and might not be understood by others ever. It can be an addiction to that one ice cream flavour that is really hard to get or the leather couch, the view on the sea or driving around in a car.</p>
+</div>
+<div class="paragraph handout">
+<p>Those are things that might even be harmful to us and our body, but we enjoy them non-the-less, which is while some argue you should get rid of them. I&#8217;d argue the opposite: keep them. But call them what they are: Luxuries. You don&#8217;t need them and you can probably stay without them for a good while but don&#8217;t cut them out of your life.</p>
+</div>
+<div class="paragraph handout">
+<p>Especially in hard moments they can lighten up your day and make you aware that even the worst day has something good. But they are also precious. Consumed to often luxuries become a commodity and lose their effect. Guard them, keep them in your pocket as something to enjoy once in a while out of good or bad reason. But you deserve luxuries, too. And make sure you give yourself a good treat ones in a while.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide">
+
+<div class="sect1">
+<h1 id="_the_canvas">The canvas</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="The canvas";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph">
+<p>And put it all in the canvas:</p>
+</div>
+<div class="imageblock ditaa centered">
+<div class="content">
+<img src="lean-life-canvas__3.png" alt="lean-life-canvas__3.png" width="100%" />
+</div>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide life hasBG">
+
+<div class="sect1">
+<h1 id="_this_is_your_life">This is your life</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="This is your life";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph handout">
+<p>All this together defines your life[role="handout"]. This defines who you are, what you do and what you are aiming towards. And if you look at it, you&#8217;ll find quite a few things are not as they are supposed to be yet.</p>
+</div>
+<div class="paragraph handout">
+<p>This is where the iteration model comes in: find those things. Mark them and find the one that you want to work on next time. Come up with a good action plan on how to tackle that specific part. And come up with a good metric on figure out, whether you got closer to it. And once you are close enough, come back to the board, re-arange things to reflect this or other changes and look for the next thing to focus on.</p>
+</div>
+<div class="paragraph handout">
+<p>You will add and remove things constantly, refine, rephrase and redefine things. And that is ok. The further you get implementing your life, the clearer it will becomes what it is about. So it is totally okay to start out with rather broad topics and get better at it while you go.</p>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div><div class="slide stormtrooper hasBG">
+
+<div class="sect1">
+<h1 id="_thanks">Thanks</h1>
+<script type="text/javascript">/*<![CDATA[*/subslide=1;nextclass="sect1";nexttitle="Thanks";slidefootnotes="";/*]]>*/</script>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For the pictures: <a href="http://commons.wikimedia.org/wiki/File:Abiola_mandela_(3).jpg">Limburg</a>, <a href="http://commons.wikimedia.org/wiki/File:Bed-In_for_Peace,<em>Amsterdam_1969</em>-<em>John_Lennon</em>%26_Yoko_Ono_16.jpg">National Archieve of the Netherlands</a>, <a href="http://www.flickr.com/photos/alohateam/4508157195/sizes/o/">Todd Morris</a>, <a href="http://www.flickr.com/photos/crazysphinx/6846247288/sizes/l/">Failed Immitator</a>, <a href="http://www.flickr.com/photos/tfjensen/8079210756/sizes/l/">Thomas Fronst Jensen</a>, <a href="http://www.flickr.com/photos/52890443@N02/4896899741/sizes/l/in/photostream/">C.G.P. Grey</a>, <a href="http://www.flickr.com/photos/denniswong/3929528862/sizes/l/in/photostream/">Dennis Wong</a>, <a href="http://www.flickr.com/photos/spaztacular/3723860557/sizes/l/">Spaztacular</a>, <a href="http://www.flickr.com/photos/elitatt/4959341601/sizes/l/">elitatt</a>, <a href="http://www.flickr.com/photos/amyelizabethplease/4812729397/sizes/l/in/photostream/">Amelia Speed</a>, <a href="http://www.flickr.com/photos/jdhancock/6010107241/sizes/l/in/photostream/">JD Hancock</a></p>
+</div>
+<div class="background stormtrooper" style="opacity: 1; background: url(assets/stormtrooper.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background mercy" style="opacity: 1; background: url(assets/mercy.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background mr-king" style="opacity: 1; background: url(assets/mr-king.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background mandela" style="opacity: 1; background: url(assets/mandela.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background gandhi" style="opacity: 1; background: url(assets/gandhi.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background lennon" style="opacity: 1; background: url(assets/lennon.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background wrong-way" style="opacity: 1; background: url(assets/wrong-way.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background people" style="opacity: 1; background: url(assets/people.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background hug" style="opacity: 1; background: url(assets/hug.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background style" style="opacity: 1; background: url(assets/style.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background luxury" style="opacity: 1; background: url(assets/luxury.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background market" style="opacity: 1; background: url(assets/market.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background topics" style="opacity: 1; background: url(assets/topics.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background end" style="opacity: 1; background: url(assets/end.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background lean" style="opacity: 1; background: url(assets/lean.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div class="background life" style="opacity: 1; background: url(assets/life.jpg); background-size: cover;position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+</div>
+<div id="footer" style="position: absolute; left: 5%; top: 80%; width: 90%;">
+<div id="footer-text">
+Version Jun 3rd, 2013<br />
+Last updated 2013-06-03 18:11:50 IDT
+</div>
+</div>
+</div></div>
+<script type="text/javascript">/*<![CDATA[*/if (slidefootnotes != ''){document.write("<hr/><p>"+slidefootnotes+"</p>");}/*]]>*/</script>
+</div>
+<script type="text/javascript">
+/*<![CDATA[*/
+    // move the div class="background" elements immediately
+    // as document.body children
+    var re = new RegExp("(^| )background\W*");
+    var divs = document.body.getElementsByTagName("div");
+    for (var i = (divs.length - 1); i >= 0 ; --i)
+    {
+      div = divs.item(i);
+      if ( re.test(div.getAttribute("class")) )
+      {
+        div2 = div.cloneNode(true);
+        div.parentNode.removeChild(div);
+        document.body.appendChild(div2);
+      }
+    }
+/*]]>*/
+</script>
 </body>
 </html>
